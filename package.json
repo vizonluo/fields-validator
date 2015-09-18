@@ -1,0 +1,21 @@
+{
+  "name": "fields-validator",
+  "version": "0.1.0",
+  "description": "a simple validator for form fields",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "form",
+    "field",
+    "input",
+    "validate",
+    "validator"
+  ],
+  "author": "vizon",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^2.3.2"
+  }
+}
