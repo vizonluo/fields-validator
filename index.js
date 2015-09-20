@@ -1,42 +1,61 @@
-function validateVal(val, rules){
-    return rules.reduce(function(result, ruleArr){
+function validateVal(val, rules, formData) {
+    var result = '';
+
+    rules.every(function(ruleArr) {
         var isValid = true;
-        var errMsg = ruleArr[ruleArr.length - 1];
+        var errMsg = ruleArr.slice(-1)[0];
         switch (ruleArr[0]) {
             case 'required':
                 isValid = val !== '';
                 break;
             case 'maxLength':
-                isValid = val.length <= ruleArr[1];
+                if (val === '') {
+                    isValid = true;
+                } else {
+                    isValid = val.length <= ruleArr[1];
+                }
                 break;
             case 'minLength':
-                isValid = val.length >= ruleArr[1];
+                if (val === '') {
+                    isValid = true;
+                } else {
+                    isValid = val.length >= ruleArr[1];
+                }
                 break;
             case 'regexp':
-                isValid = ruleArr[1].test(val);
+                if (val === '') {
+                    isValid = true;
+                } else {
+                    isValid = ruleArr[1].test(val);
+                }
+                break;
+            case 'custom':
+                isValid = ruleArr[1](formData);
                 break;
             default:
                 isValid = true;
         }
-        if(!isValid){
+        if (!isValid) {
             result = errMsg;
         }
 
-        return result;
-    }, '');
+        return isValid;
+    });
+
+    return result;
 }
 
-function validate(validateConfig, formData){
-    return Object.keys(validateConfig).reduce(function(resultArr, key){
+function validate(validateConfig, formData) {
+    return Object.keys(formData).reduce(function(resultArr, key) {
         var val = formData[key];
         var rules = validateConfig[key];
 
-        if(!rules){
+        if (!rules) {
             return resultArr;
         }
 
-        var errMsg = validateVal(val, rules);
-        if(errMsg) {
+        var errMsg = validateVal(val, rules, formData);
+        if (errMsg) {
             resultArr.push({
                 field: key,
                 errMsg: errMsg
