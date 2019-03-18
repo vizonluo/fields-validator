@@ -52,3 +52,5 @@ console.log(ret);
 //   { field: 'password', errMsg: 'too short' },
 //   { field: 'rePassword', errMsg: 'should be equal to password' } ]
 ```
+
+- [relative](./docs/relative.md)
